@@ -11,11 +11,11 @@ public class StudentDAO {
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(JDBC_URL);
     }
-
+//    DatabaseConnection conn = new DatabaseConnection();
     // Create Student
     public void addStudent(Student student) {
         String sql = "INSERT INTO Students (name, email, age, major, gpa) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
+        try ( Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getEmail());
