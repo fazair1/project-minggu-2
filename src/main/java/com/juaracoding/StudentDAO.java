@@ -105,5 +105,32 @@ public class StudentDAO {
         }
         return students;
     }
-
+    // Search Student by ID
+    public boolean findStudentByID(String id) {
+        List<Student> students = new ArrayList<>();
+        String sql = "SELECT * FROM Students WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Student student = new Student(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getInt("age"),
+                        rs.getString("major"),
+                        rs.getDouble("gpa")
+                );
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (students.size()==0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
