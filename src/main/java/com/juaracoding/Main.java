@@ -22,7 +22,7 @@ public class Main {
 
             System.out.println();
             System.out.println("=====Student Management System=====");
-            System.out.println("1. Add Student");
+            System.out.println("1. Create Student");
             System.out.println("2. Read Student");
             System.out.println("3. Update Student");
             System.out.println("4. Delete Student");
@@ -55,9 +55,9 @@ public class Main {
                     updateStudent(studentList, studentDAO);
                     break;
 //
-//                case 4:
-//                    deleteProduct(listProduk);
-//                    break;
+                case 4:
+                    deleteStudent(studentList, studentDAO);
+                    break;
 
                 case 5:
                     return;
@@ -72,7 +72,7 @@ public class Main {
         String studentMajor;
         double studentGpa = 0.0;
 
-        System.out.println("==========Create Student=========");
+//        System.out.println("==========Create Student=========");
 //        System.out.println("=====-=====-=====-=====-=====-===");
 
         do {
@@ -126,7 +126,7 @@ public class Main {
         Student newStudent = new Student((studentList.size()+1), studentname, studentEmail, studentAge, studentMajor, studentGpa);
         studentDAO.addStudent(newStudent);
 
-        System.out.println("Successfully updated Student with data:");
+        System.out.println("Successfully Created Student with data:");
         System.out.println("ID: "+newStudent.getId());
         System.out.println("Name: "+newStudent.getName());
         System.out.println("Email: "+newStudent.getEmail());
@@ -136,8 +136,8 @@ public class Main {
     }
     static void readStudent (List<Student> studentList, StudentDAO studentDAO) {
 //        System.out.println("=====-=====-=====-=====-=====-=====");
-        System.out.println("===========Read Student============");
-        System.out.println();
+//        System.out.println("===========Read Student============");
+//        System.out.println();
         Scanner scan = new Scanner(System.in);
         String temp;
 
@@ -154,13 +154,13 @@ public class Main {
     }
     static void updateStudent (List<Student> studentList, StudentDAO studentDAO) {
 //        System.out.println("=====-=====-=====-=====-=====-=====");
-        System.out.println("==========Update Student===========");
-        System.out.println();
+//        System.out.println("==========Update Student===========");
+//        System.out.println();
         Scanner scan = new Scanner(System.in);
         String num;
         boolean produkFound;
         String temp;
-        int ID = 0;
+        int id = 0;
 
         if (studentList.isEmpty()) {
             System.out.println("Empty Data");
@@ -174,9 +174,9 @@ public class Main {
             num = num.trim();
 
             if (onlyDigits(num) && !(num.isEmpty()) && studentDAO.findStudentByID(num)) {
-                ID = Integer.parseInt(num);
+                id = Integer.parseInt(num);
             }
-        } while (!(onlyDigits(num)) || num.isEmpty() || (ID<=0));
+        } while (!(onlyDigits(num)) || num.isEmpty() || (id<=0));
 
         String studentname;
         String studentEmail;
@@ -234,16 +234,63 @@ public class Main {
             }
         } while (gpa.isEmpty() || studentGpa <= 0);
 
-        Student updateStudent = new Student(ID, studentname, studentEmail, studentAge, studentMajor, studentGpa);
+        Student updateStudent = new Student(id, studentname, studentEmail, studentAge, studentMajor, studentGpa);
         studentDAO.updateStudent(updateStudent);
 
-        System.out.println("Successfully updated Student with data:");
+        System.out.println("Successfully Updated Student with data:");
         System.out.println("ID: "+updateStudent.getId());
         System.out.println("Name: "+updateStudent.getName());
         System.out.println("Email: "+updateStudent.getEmail());
         System.out.println("Age: "+updateStudent.getAge());
         System.out.println("Major: "+updateStudent.getMajor());
         System.out.println("GPA: "+updateStudent.getGpa());
+    }
+    static void deleteStudent (List<Student> studentList, StudentDAO studentDAO) {
+//        System.out.println("=====-=====-=====-=====-=====-=====");
+//        System.out.println("==========Delete Student===========");
+        Scanner scan = new Scanner(System.in);
+        String num;
+        String temp;
+        int id = 0;
+
+        if (studentList.isEmpty()) {
+            System.out.println("Empty Data");
+            return;
+        }
+        showProductList(studentList, studentDAO);
+        do {
+            System.out.print("Insert Student ID: ");
+            num = scan.nextLine();
+            num = num.trim();
+
+            if (onlyDigits(num) && !(num.isEmpty()) && studentDAO.findStudentByID(num)) {
+                id = Integer.parseInt(num);
+            }
+        } while (!(onlyDigits(num)) || num.isEmpty() || (id<=0));
+
+        List<Student> deletedStudent = studentDAO.searchStudentById(num);
+
+        System.out.println("ID: "+deletedStudent.get(0).getId());
+        System.out.println("Name: "+deletedStudent.get(0).getName());
+        System.out.println("Email: "+deletedStudent.get(0).getEmail());
+        System.out.println("Age: "+deletedStudent.get(0).getAge());
+        System.out.println("Major: "+deletedStudent.get(0).getMajor());
+        System.out.println("GPA: "+deletedStudent.get(0).getGpa());
+
+        do {
+            System.out.print("Are you sure you wanted to delete this student?? [y/n]: ");
+            temp = scan.nextLine();
+            temp = temp.trim();
+
+        }while (!(temp.equals("y") || temp.equals("n")));
+
+        if (temp.equals("n")) {
+            return;
+        }
+        else {
+            studentDAO.deleteStudent(id);
+            System.out.println("Successfully deleted student");
+        }
     }
     static boolean onlyDigits(String s) {
 
