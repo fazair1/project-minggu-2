@@ -55,9 +55,9 @@ public class Main {
                     updateStudent(studentList, studentDAO);
                     break;
 //
-                case 4:
-                    deleteProduct(listProduk);
-                    break;
+//                case 4:
+//                    deleteProduct(listProduk);
+//                    break;
 
                 case 5:
                     return;
@@ -169,23 +169,14 @@ public class Main {
         showProductList(studentList, studentDAO);
 
         do {
-            System.out.print("Insert Student ID [1-"+studentList.size()+"]: ");
+            System.out.print("Insert Student ID: ");
             num = scan.nextLine();
             num = num.trim();
 
-            if (onlyDigits(num) && !(num.isEmpty())) {
+            if (onlyDigits(num) && !(num.isEmpty()) && studentDAO.findStudentByID(num)) {
                 ID = Integer.parseInt(num);
             }
-            try {
-                studentDAO.searchStudentByID(num);
-                //  Block of code to try
-            }
-            catch(Exception e) {
-                System.out.println("Student Doesnt exist");
-                //  Block of code to handle errors
-            }
-
-        } while (!(onlyDigits(num)) || num.isEmpty() || (ID<=0 || ID>studentList.size()) );
+        } while (!(onlyDigits(num)) || num.isEmpty() || (ID<=0));
 
         String studentname;
         String studentEmail;
@@ -193,8 +184,7 @@ public class Main {
         String studentMajor;
         double studentGpa = 0.0;
 
-        System.out.println("==========Update Student=========");
-//        System.out.println("=====-=====-=====-=====-=====-===");
+        System.out.println();
 
         do {
             System.out.print("Insert Student Name [Not Nullable]: ");
@@ -244,10 +234,10 @@ public class Main {
             }
         } while (gpa.isEmpty() || studentGpa <= 0);
 
-        Student updateStudent = new Student((studentList.size()), studentname, studentEmail, studentAge, studentMajor, studentGpa);
+        Student updateStudent = new Student(ID, studentname, studentEmail, studentAge, studentMajor, studentGpa);
         studentDAO.updateStudent(updateStudent);
 
-        System.out.println("Successfully created Student with data:");
+        System.out.println("Successfully updated Student with data:");
         System.out.println("ID: "+updateStudent.getId());
         System.out.println("Name: "+updateStudent.getName());
         System.out.println("Email: "+updateStudent.getEmail());
@@ -276,7 +266,7 @@ public class Main {
             System.out.printf("%-4d|%-15s|%-30s|%-5d|%-20s|%-5.2f|",student.getId(), student.getName(), student.getEmail(), student.getAge(), student.getMajor(), student.getGpa());
             System.out.println();
         }
-        System.out.println("====|===============|==============================|=====|===============|=====|");
+        System.out.println("====|===============|==============================|=====|====================|=====|");
         System.out.println();
     }
 
