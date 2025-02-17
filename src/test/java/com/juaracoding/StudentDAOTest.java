@@ -92,4 +92,22 @@ public class StudentDAOTest {
         Assert.assertEquals(foundStudent.getEmail(), testStudent.getEmail(), "Search result email does not match.");
     }
 
+    @Test
+    public void testSearchStudentById() {
+        // Search for the test student by id
+        List<Student> searchResults = studentDAO.searchStudentById("1");
+        Assert.assertFalse(searchResults.isEmpty(), "Search results should not be empty.");
+
+        // Verify the search result
+        Student foundStudent = searchResults.get(0);
+        Assert.assertEquals(foundStudent.getId(), testStudent.getId(), "Search result id does not match.");
+        Assert.assertEquals(foundStudent.getEmail(), testStudent.getEmail(), "Search result email does not match.");
+    }
+
+    @Test
+    public void testFindStudentById() {
+        // Find the test student by id
+        boolean findResult = studentDAO.findStudentByID("1");
+        Assert.assertTrue(findResult, "Search results should not be false.");
+    }
 }
