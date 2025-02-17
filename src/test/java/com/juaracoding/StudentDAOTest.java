@@ -10,12 +10,14 @@ import java.util.List;
 public class StudentDAOTest {
     private StudentDAO studentDAO;
     private Student testStudent;
+    private Student testStudent2;
 
     @BeforeClass
     public void setUp() {
         studentDAO = new StudentDAO();
         // Create a test student
         testStudent = new Student(1, "Test User", "test.user@example.com", 20, "IT", 3.0);
+
         studentDAO.addStudent(testStudent);
     }
 
@@ -101,6 +103,18 @@ public class StudentDAOTest {
         // Verify the search result
         Student foundStudent = searchResults.get(0);
         Assert.assertEquals(foundStudent.getId(), testStudent.getId(), "Search result id does not match.");
+        Assert.assertEquals(foundStudent.getEmail(), testStudent.getEmail(), "Search result email does not match.");
+    }
+
+    @Test
+    public void testSearchStudentByMajor() {
+        // Search for the test student by major
+        List<Student> searchResults = studentDAO.searchStudentByMajor("IT");
+        Assert.assertFalse(searchResults.isEmpty(), "Search results should not be empty.");
+
+        // Verify the search result
+        Student foundStudent = searchResults.get(0);
+        Assert.assertEquals(foundStudent.getMajor(), testStudent.getMajor(), "Search result major does not match.");
         Assert.assertEquals(foundStudent.getEmail(), testStudent.getEmail(), "Search result email does not match.");
     }
 
