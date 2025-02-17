@@ -17,7 +17,7 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         int menu=0;
 
-        while (menu!=6) {
+        while (menu!=7) {
             studentList = studentDAO.getAllStudents();
 
             System.out.println();
@@ -27,7 +27,8 @@ public class Main {
             System.out.println("3. Update Student");
             System.out.println("4. Delete Student");
             System.out.println("5. Search Student");
-            System.out.println("6. Exit");
+            System.out.println("6. Student Aggregate");
+            System.out.println("7. Exit");
 
             System.out.println("=====-=====-=====-=====-=====-=====");
 
@@ -42,7 +43,7 @@ public class Main {
                     menu = Integer.parseInt(num);
                 }
 
-            } while (!(onlyDigits(num)) || num.isEmpty() || (menu<=0 || menu>5) );
+            } while (!(onlyDigits(num)) || num.isEmpty() || (menu<=0 || menu>7) );
 
             switch (menu) {
                 case 1:
@@ -66,6 +67,10 @@ public class Main {
                     break;
 
                 case 6:
+                    studentAggregate(studentList, studentDAO);
+                    break;
+
+                case 7:
                     return;
 
             }
@@ -346,6 +351,46 @@ public class Main {
 
             } while (studentSearchedList.isEmpty());
             showStudentList(studentSearchedList, studentDAO);
+            do {
+                System.out.print("Press x to exit read student [x]: ");
+                temp = scan.nextLine();
+                temp = temp.trim();
+            }while (!(temp.equals("x")));
+        }
+    }
+    static void studentAggregate (List<Student> studentList, StudentDAO studentDAO) {
+        Scanner scan = new Scanner(System.in);
+        String name;
+        boolean studentFound;
+        String temp;
+        List<Student> studentSearchedList = new ArrayList<>();
+
+        if (studentList.isEmpty()) {
+            System.out.println("Empty Data");
+            return;
+        }
+        System.out.println("1. Average GPA");
+        System.out.println("2. Student Count");
+        do {
+            System.out.print("Select the menu [1/2]: ");
+            temp = scan.nextLine();
+            temp = temp.trim();
+        }while (temp.isEmpty() || !(temp.equals("1") || temp.equals("2")));
+
+        if (temp.equals("1")) {
+            double average = studentDAO.getAverageGPA();
+            System.out.println("The Students average GPA is: "+average);
+
+            do {
+                System.out.print("Press x to exit read student [x]: ");
+                temp = scan.nextLine();
+                temp = temp.trim();
+            }while (!(temp.equals("x")));
+        }
+        else if (temp.equals("2")) {
+            int count = studentDAO.getStudentCount();
+            System.out.println("The Students count is: "+count);
+
             do {
                 System.out.print("Press x to exit read student [x]: ");
                 temp = scan.nextLine();

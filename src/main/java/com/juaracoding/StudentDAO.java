@@ -184,4 +184,37 @@ public class StudentDAO {
             return true;
         }
     }
+
+    // Average GPA
+    public double getAverageGPA() {
+        double average = 0.0;
+        String sql = "SELECT AVG(gpa) AS average FROM Students";
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                average = rs.getDouble("average");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return average;
+    }
+
+    // Student Count
+    public int getStudentCount() {
+        int count = 0;
+        String sql = "SELECT COUNT(name) AS student_count FROM Students";
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                count = rs.getInt("student_count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
 }
