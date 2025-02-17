@@ -33,7 +33,7 @@ public class Main {
             System.out.println("=====-=====-=====-=====-=====-=====");
 
             do {
-                System.out.print("Choose the menu[1-6]: ");
+                System.out.print("Choose the menu[1-7]: ");
 
                 num = scan.nextLine();
                 num = num.trim();
