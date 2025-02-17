@@ -17,7 +17,7 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         int menu=0;
 
-        while (menu!=5) {
+        while (menu!=6) {
             studentList = studentDAO.getAllStudents();
 
             System.out.println();
@@ -26,11 +26,13 @@ public class Main {
             System.out.println("2. Read Student");
             System.out.println("3. Update Student");
             System.out.println("4. Delete Student");
-            System.out.println("5. Exit");
+            System.out.println("5. Search Student");
+            System.out.println("6. Exit");
+
             System.out.println("=====-=====-=====-=====-=====-=====");
 
             do {
-                System.out.print("Choose the menu[1-5]: ");
+                System.out.print("Choose the menu[1-6]: ");
 
                 num = scan.nextLine();
                 num = num.trim();
@@ -60,7 +62,12 @@ public class Main {
                     break;
 
                 case 5:
+                    searchStudent(studentList, studentDAO);
+                    break;
+
+                case 6:
                     return;
+
             }
         }
     }
@@ -145,7 +152,7 @@ public class Main {
             System.out.println("Empty Data");
             return;
         }
-        showProductList(studentList, studentDAO);
+        showStudentList(studentList, studentDAO);
         do {
             System.out.print("Press x to exit read student [x]: ");
             temp = scan.nextLine();
@@ -166,7 +173,7 @@ public class Main {
             System.out.println("Empty Data");
             return;
         }
-        showProductList(studentList, studentDAO);
+        showStudentList(studentList, studentDAO);
 
         do {
             System.out.print("Insert Student ID: ");
@@ -257,7 +264,7 @@ public class Main {
             System.out.println("Empty Data");
             return;
         }
-        showProductList(studentList, studentDAO);
+        showStudentList(studentList, studentDAO);
         do {
             System.out.print("Insert Student ID: ");
             num = scan.nextLine();
@@ -292,6 +299,60 @@ public class Main {
             System.out.println("Successfully deleted student");
         }
     }
+    static void searchStudent (List<Student> studentList, StudentDAO studentDAO) {
+        Scanner scan = new Scanner(System.in);
+        String name;
+        boolean studentFound;
+        String temp;
+        List<Student> studentSearchedList = new ArrayList<>();
+
+        if (studentList.isEmpty()) {
+            System.out.println("Empty Data");
+            return;
+        }
+        System.out.println("1. Name");
+        System.out.println("2. Major");
+        do {
+            System.out.print("Do you want to search Student by name or major? [1/2]: ");
+            temp = scan.nextLine();
+            temp = temp.trim();
+        }while (temp.isEmpty() || !(temp.equals("1") || temp.equals("2")));
+
+        if (temp.equals("1")) {
+
+            do {
+                System.out.print("Insert the student name: ");
+                name = scan.nextLine();
+                name = name.trim();
+
+                studentSearchedList = studentDAO.searchStudentByName(name);
+
+            } while (studentSearchedList.isEmpty());
+            showStudentList(studentSearchedList, studentDAO);
+            do {
+                System.out.print("Press x to exit read student [x]: ");
+                temp = scan.nextLine();
+                temp = temp.trim();
+            }while (!(temp.equals("x")));
+        }
+        else if (temp.equals("2")) {
+
+            do {
+                System.out.print("Insert the Major: ");
+                name = scan.nextLine();
+                name = name.trim();
+
+                studentSearchedList = studentDAO.searchStudentByMajor(name);
+
+            } while (studentSearchedList.isEmpty());
+            showStudentList(studentSearchedList, studentDAO);
+            do {
+                System.out.print("Press x to exit read student [x]: ");
+                temp = scan.nextLine();
+                temp = temp.trim();
+            }while (!(temp.equals("x")));
+        }
+    }
     static boolean onlyDigits(String s) {
 
         // Traverse each character in the string
@@ -306,7 +367,7 @@ public class Main {
         }
         return true;  // If all characters are digits, return true
     }
-    static void showProductList (List<Student> studentList, StudentDAO studentDAO) {
+    static void showStudentList (List<Student> studentList, StudentDAO studentDAO) {
 
         System.out.println("=ID=|======Name=====|=============Email============|=Age=|========Major=======|=GPA=|");
         for (Student student : studentList) {

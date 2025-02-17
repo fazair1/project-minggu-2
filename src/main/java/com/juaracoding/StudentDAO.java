@@ -105,6 +105,7 @@ public class StudentDAO {
         }
         return students;
     }
+
     // Search Student by Id
     public List<Student> searchStudentById(String id) {
         List<Student> students = new ArrayList<>();
@@ -129,6 +130,32 @@ public class StudentDAO {
         }
         return students;
     }
+
+    // Search Student by Major
+    public List<Student> searchStudentByMajor(String major) {
+        List<Student> students = new ArrayList<>();
+        String sql = "SELECT * FROM Students WHERE major LIKE ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + major + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Student student = new Student(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getInt("age"),
+                        rs.getString("major"),
+                        rs.getDouble("gpa")
+                );
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return students;
+    }
+
     // Find Student by ID
     public boolean findStudentByID(String id) {
         List<Student> students = new ArrayList<>();
