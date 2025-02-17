@@ -124,4 +124,16 @@ public class StudentDAOTest {
         boolean findResult = studentDAO.findStudentByID("1");
         Assert.assertTrue(findResult, "Search results should not be false.");
     }
+
+    @Test
+    public void testGetAverageGPA() {
+        double average = studentDAO.getAverageGPA();
+        Assert.assertEquals(average, 3.0, "Search result average does not match.");
+    }
+
+    @Test
+    public void testGetStudentCount() {
+        int count = studentDAO.getStudentCount();
+        Assert.assertEquals(count, 1, "Search result count does not match.");
+    }
 }
